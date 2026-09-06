@@ -1,0 +1,174 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 16px;
+  resize: vertical;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.035);
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 48px;
+  padding: 0 20px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: #fff;
+  color: #08090a;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+}
+
+.error {
+  margin: 0;
+  padding: 12px 14px;
+
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  border-radius: 10px;
+
+  background: rgba(255, 80, 80, 0.06);
+  color: #ff8f8f;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.resultLabel {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.resultStatus {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+}
+
+.resultText {
+  margin: 0;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .form {
+    padding: 20px;
+  }
+
+  .textarea {
+    min-height: 150px;
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
