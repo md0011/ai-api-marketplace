@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-
 import { services } from "@/data/services";
+import { executeService } from "@/lib/services/executeService";
 
 export async function POST(request: Request) {
   try {
@@ -39,27 +39,17 @@ export async function POST(request: Request) {
     // Later this layer will handle x402 payment
     // before executing the actual provider service.
 
-    await new Promise((resolve) =>
-      setTimeout(resolve, 1200),
-    );
-
-    const result = [
-      `Request completed successfully.`,
-      ``,
-      `Service: ${service.name}`,
-      `Provider: ${service.provider}`,
-      ``,
-      `Input received:`,
+    const execution = await executeService({
+      service,
       input,
-      ``,
-      `Execution status: completed`,
-    ].join("\n");
+    });
 
     return NextResponse.json({
-      success: true,
+      success: execution.success,
       service: service.name,
-      result,
+      result: execution.output,
     });
+
   } catch {
     return NextResponse.json(
       {

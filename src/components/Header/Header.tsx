@@ -21,9 +21,10 @@ export default function Header() {
         </nav>
 
         <div className={styles.actions}>
-          <button className={styles.connectButton}>
+          <Link href="/agent" className={styles.connectButton}>
             Connect agent
-          </button>
+            <ArrowUpRight size={14} />
+          </Link>
 
           <Link href="/marketplace" className={styles.launchButton}>
             Explore

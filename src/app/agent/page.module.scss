@@ -1,0 +1,105 @@
+.page {
+  min-height: 100vh;
+  padding: 32px 24px 80px;
+}
+
+.container {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+
+  max-width: 760px;
+  margin-top: 80px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 10px;
+
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.header h1 {
+  margin: 0;
+
+  color: #fff;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.header p {
+  max-width: 620px;
+  margin: 18px 0 0;
+
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 18px;
+
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 18px 60px;
+  }
+
+  .header {
+    margin-top: 56px;
+  }
+
+  .icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+  }
+}
