@@ -1,11 +1,44 @@
-.form {
+.formCard {
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   padding: 28px;
+
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
+
   background: rgba(255, 255, 255, 0.025);
+}
+
+.formHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  span {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  h2 {
+    margin: 7px 0 0;
+
+    font-size: 24px;
+    line-height: 1.2;
+  }
+}
+
+.agentBadge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
 }
 
 .field {
@@ -16,8 +49,10 @@
 
 .label {
   color: rgba(255, 255, 255, 0.55);
+
   font-size: 11px;
   font-weight: 700;
+
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -26,6 +61,7 @@
   width: 100%;
   min-height: 180px;
   padding: 16px;
+
   resize: vertical;
 
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -51,15 +87,23 @@
     border-color: rgba(255, 255, 255, 0.25);
     background: rgba(255, 255, 255, 0.05);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
 }
 
-.submit {
+.submit,
+.paymentButton {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 
+  width: 100%;
   min-height: 48px;
+
   padding: 0 20px;
 
   border: 0;
@@ -68,6 +112,7 @@
   background: #fff;
   color: #08090a;
 
+  font: inherit;
   font-size: 13px;
   font-weight: 700;
 
@@ -90,6 +135,7 @@
 
 .error {
   margin: 0;
+
   padding: 12px 14px;
 
   border: 1px solid rgba(255, 80, 80, 0.2);
@@ -102,17 +148,177 @@
   line-height: 1.5;
 }
 
-.result {
+.paymentCard {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 
   padding: 20px;
 
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.paymentHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.4);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+}
+
+.paymentIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.paymentDetails {
+  display: flex;
+  gap: 1px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+
+    padding: 12px;
+
+    background: rgba(0, 0, 0, 0.14);
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.32);
+
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+  }
+}
+
+.paymentButton {
+  margin-top: 0;
+}
+
+.demoNotice {
+  margin: -4px 0 0;
+
+  color: rgba(255, 255, 255, 0.28);
+
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.confirmed,
+.executing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.3);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+  }
+
+  strong {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+  }
+}
+
+.confirmed {
+  color: #7fffb5;
+}
+
+.confirmedIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 9px;
+
+  background: rgba(100, 255, 180, 0.08);
+  color: #7fffb5;
+}
+
+.executing {
+  .spinner {
+    flex-shrink: 0;
+  }
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding: 20px;
+
+  border: 1px solid rgba(100, 255, 180, 0.1);
+  border-radius: 14px;
+
+  background: rgba(100, 255, 180, 0.025);
 }
 
 .resultHeader {
@@ -122,21 +328,41 @@
   gap: 12px;
 }
 
+.resultTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .resultLabel {
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 9px;
   font-weight: 700;
+
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
+.resultTitle strong {
+  font-size: 13px;
+}
+
 .resultStatus {
-  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #7fffb5;
   font-size: 11px;
 }
 
 .resultText {
   margin: 0;
+
+  padding-top: 14px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 
   white-space: pre-wrap;
   word-break: break-word;
@@ -153,16 +379,6 @@
   line-height: 1.7;
 }
 
-@media (max-width: 640px) {
-  .form {
-    padding: 20px;
-  }
-
-  .textarea {
-    min-height: 150px;
-  }
-}
-
 .spinner {
   animation: spin 1s linear infinite;
 }
@@ -170,5 +386,29 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .formCard {
+    padding: 20px;
+  }
+
+  .formHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .textarea {
+    min-height: 150px;
+  }
+
+  .paymentDetails {
+    flex-direction: column;
+  }
+
+  .resultHeader {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

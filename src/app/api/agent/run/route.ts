@@ -38,13 +38,15 @@ export async function POST(request: Request) {
     ].join("\n");
 
     return NextResponse.json({
-      success: true,
+      success: execution.success,
+      serviceId: service.id,
       service: service.name,
       provider: service.provider,
       price: service.price,
       unit: service.unit,
       reasoning,
-      result,
+      payment: execution.payment,
+      result: execution.output,
     });
   } catch {
     return NextResponse.json(

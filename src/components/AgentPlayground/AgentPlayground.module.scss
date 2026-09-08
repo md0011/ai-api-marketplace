@@ -42,11 +42,17 @@
   }
 }
 
-.agentIcon {
+.agentIcon,
+.serviceIcon,
+.paymentIcon,
+.confirmedIcon {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
 
+.agentIcon {
   width: 40px;
   height: 40px;
 
@@ -76,16 +82,22 @@
   font-size: 14px;
   line-height: 1.6;
 
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
   &::placeholder {
     color: rgba(255, 255, 255, 0.25);
   }
 
   &:focus {
     border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 
-.submit {
+.submit,
+.paymentButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,13 +105,9 @@
 
   width: 100%;
   min-height: 48px;
-  margin-top: 12px;
 
   border: 0;
   border-radius: 10px;
-
-  background: #fff;
-  color: #08090a;
 
   font: inherit;
   font-size: 13px;
@@ -107,10 +115,28 @@
 
   cursor: pointer;
 
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.submit {
+  margin-top: 12px;
+
+  background: #fff;
+  color: #08090a;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
   }
+}
+
+.submit:disabled,
+.paymentButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .spinner {
@@ -195,16 +221,21 @@
   }
 }
 
+.serviceIcon,
 .success {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   width: 34px;
   height: 34px;
 
   border-radius: 50%;
+}
 
+.serviceIcon {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.success {
   background: rgba(100, 255, 180, 0.08);
   color: #7fffb5;
 }
@@ -233,6 +264,155 @@
     color: rgba(255, 255, 255, 0.65);
     font-size: 12px;
     line-height: 1.6;
+  }
+}
+
+.paymentCard {
+  padding: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.paymentHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 18px;
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+}
+
+.paymentIcon {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.paymentDetails {
+  display: flex;
+  gap: 1px;
+
+  margin-bottom: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+
+    padding: 12px;
+
+    background: rgba(0, 0, 0, 0.14);
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.32);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  strong {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+  }
+}
+
+.paymentButton {
+  background: #fff;
+  color: #08090a;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+}
+
+.demoNotice {
+  margin: 12px 0 0;
+
+  color: rgba(255, 255, 255, 0.28);
+
+  font-size: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.confirmed,
+.executing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  span {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  strong {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+  }
+}
+
+.confirmedIcon {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 9px;
+
+  background: rgba(100, 255, 180, 0.08);
+  color: #7fffb5;
+}
+
+.executing {
+  .spinner {
+    flex-shrink: 0;
   }
 }
 
@@ -313,5 +493,9 @@
 
   .price {
     display: none;
+  }
+
+  .paymentDetails {
+    flex-direction: column;
   }
 }

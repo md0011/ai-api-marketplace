@@ -17,6 +17,12 @@ export const services: APIService[] = [
       "Text-to-image",
       "Product imagery",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.002",
+    },
   },
   {
     id: "deepsearch",
@@ -34,6 +40,12 @@ export const services: APIService[] = [
       "Research",
       "Source extraction",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.001",
+    },
   },
   {
     id: "summarize",
@@ -51,6 +63,12 @@ export const services: APIService[] = [
       "Document analysis",
       "Key points",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.0005",
+    },
   },
   {
     id: "lingua",
@@ -68,6 +86,12 @@ export const services: APIService[] = [
       "Language detection",
       "Context preservation",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.0005",
+    },
   },
   {
     id: "chainlens",
@@ -85,6 +109,12 @@ export const services: APIService[] = [
       "Wallet activity",
       "Protocol analytics",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.001",
+    },
   },
   {
     id: "codepilot",
@@ -102,5 +132,11 @@ export const services: APIService[] = [
       "Code review",
       "Debugging",
     ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.0015",
+    },
   },
 ];

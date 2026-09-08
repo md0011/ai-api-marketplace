@@ -5,6 +5,13 @@ export type ServiceCategory =
   | "Media"
   | "Developer";
 
+export interface ServicePayment {
+  method: "x402";
+  network: "hedera-testnet";
+  asset: "HBAR";
+  amount: string;
+}
+
 export interface APIService {
   id: string;
   name: string;
@@ -13,7 +20,8 @@ export interface APIService {
   category: ServiceCategory;
   price: string;
   unit: string;
-  responseTime: string;
   status: "online" | "offline";
+  responseTime: string;
   capabilities: string[];
+  payment: ServicePayment;
 }
