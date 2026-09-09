@@ -13,6 +13,8 @@ export interface PaymentResult {
   asset: ServicePayment["asset"];
   amount: string;
   message: string;
+  transaction?: string;
+  payer?: string;
 }
 
 export async function requestPayment({
