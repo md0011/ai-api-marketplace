@@ -32,7 +32,7 @@ export default function AgentPage() {
         <div className={styles.note}>
           <Sparkles size={14} />
           <span>
-            Autonomous service selection is currently running in demo mode.
+            Agent autonomously selects services and settles payments through Hedera x402.
           </span>
         </div>
       </div>

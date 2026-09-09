@@ -20,6 +20,8 @@ interface PaymentState {
   asset: string;
   amount: string;
   message: string;
+  transaction?: string;
+  payer?: string;
 }
 
 interface AgentResult {
@@ -110,11 +112,11 @@ export default function AgentPlayground() {
       setResult((current) =>
         current
           ? {
-              ...current,
-              payment: data.payment,
-              result: "",
-              success: false,
-            }
+            ...current,
+            payment: data.payment,
+            result: "",
+            success: false,
+          }
           : current,
       );
 
@@ -126,11 +128,11 @@ export default function AgentPlayground() {
       setResult((current) =>
         current
           ? {
-              ...current,
-              success: data.success,
-              payment: data.payment,
-              result: data.result,
-            }
+            ...current,
+            success: data.success,
+            payment: data.payment,
+            result: data.result,
+          }
           : current,
       );
 
@@ -304,10 +306,6 @@ export default function AgentPlayground() {
                 )}
               </button>
 
-              <p className={styles.demoNotice}>
-                Demo payment only. Real Hedera settlement will be
-                connected in the next stage.
-              </p>
             </div>
           )}
 
@@ -318,10 +316,60 @@ export default function AgentPlayground() {
               </div>
 
               <div>
-                <span>PAYMENT CONFIRMED</span>
+                <span>PAYMENT SETTLED</span>
                 <strong>
-                  {result.payment.amount} {result.payment.asset} approved
+                  {result.payment.amount} {result.payment.asset} settled on Hedera
                 </strong>
+
+                {result.payment.transaction && (
+                  <div style={{ marginTop: "10px" }}>
+                    <span>Transaction</span>
+                    <strong
+                      style={{
+                        display: "block",
+                        marginTop: "4px",
+                        wordBreak: "break-all",
+                        fontFamily: "monospace",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {result.payment.transaction}
+                    </strong>
+
+                    <a
+                      href={`https://hashscan.io/testnet/transaction/${encodeURIComponent(
+                        result.payment.transaction,
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      View transaction
+                      <ArrowUpRight size={13} />
+                    </a>
+                  </div>
+                )}
+
+                {result.payment.payer && (
+                  <div style={{ marginTop: "10px" }}>
+                    <span>Payer</span>
+                    <strong
+                      style={{
+                        display: "block",
+                        marginTop: "4px",
+                        fontFamily: "monospace",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {result.payment.payer}
+                    </strong>
+                  </div>
+                )}
               </div>
             </div>
           )}
