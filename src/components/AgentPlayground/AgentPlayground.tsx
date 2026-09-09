@@ -32,6 +32,7 @@ interface AgentResult {
   price: string;
   unit: string;
   reasoning: string;
+  evaluatedServices: number;
   result: string;
   payment: PaymentState;
 }
@@ -214,191 +215,206 @@ export default function AgentPlayground() {
       )}
 
       {result && (
-        <div className={styles.result}>
-          <div className={styles.resultTop}>
-            <div
-              className={
-                result.payment.paid
-                  ? styles.success
-                  : styles.serviceIcon
-              }
-            >
-              {result.payment.paid ? (
-                <Check size={14} />
-              ) : (
-                <Bot size={14} />
-              )}
-            </div>
-
-            <div>
-              <span>
-                {executing
-                  ? "EXECUTING SERVICE"
-                  : result.payment.paid
-                    ? "EXECUTION COMPLETE"
-                    : "SERVICE SELECTED"}
-              </span>
-
-              <strong>{result.service}</strong>
-            </div>
-
-            <div className={styles.price}>
-              {result.price} {result.unit}
-            </div>
+        <>
+          <div className={styles.discoveryBadge}>
+            <Sparkles size={13} />
+            <span>
+              Agent discovered {result.evaluatedServices} services
+            </span>
           </div>
 
-          <div className={styles.reasoning}>
-            <span>AGENT DECISION</span>
-            <p>{result.reasoning}</p>
-          </div>
-
-          {paymentPending && (
-            <div className={styles.paymentCard}>
-              <div className={styles.paymentHeader}>
-                <div className={styles.paymentIcon}>
-                  <CircleDollarSign size={17} />
-                </div>
-
-                <div>
-                  <span>PAYMENT REQUIRED</span>
-                  <strong>Approve this request</strong>
-                </div>
-              </div>
-
-              <div className={styles.paymentDetails}>
-                <div>
-                  <span>Amount</span>
-                  <strong>
-                    {result.payment.amount} {result.payment.asset}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Network</span>
-                  <strong>Hedera Testnet</strong>
-                </div>
-
-                <div>
-                  <span>Method</span>
-                  <strong>{result.payment.method}</strong>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                className={styles.paymentButton}
-                onClick={handleApprovePayment}
-                disabled={paymentLoading}
+          <div className={styles.result}>
+            <div className={styles.resultTop}>
+              <div
+                className={
+                  result.payment.paid
+                    ? styles.success
+                    : styles.serviceIcon
+                }
               >
-                {paymentLoading ? (
-                  <>
-                    <LoaderCircle
-                      size={16}
-                      className={styles.spinner}
-                    />
-                    Confirming payment...
-                  </>
+                {result.payment.paid ? (
+                  <Check size={14} />
                 ) : (
-                  <>
-                    Approve payment
-                    <ArrowUpRight size={16} />
-                  </>
+                  <Bot size={14} />
                 )}
-              </button>
-
-            </div>
-          )}
-
-          {result.payment.paid && !executing && (
-            <div className={styles.confirmed}>
-              <div className={styles.confirmedIcon}>
-                <ShieldCheck size={15} />
               </div>
 
               <div>
-                <span>PAYMENT SETTLED</span>
+                <span>
+                  {executing
+                    ? "EXECUTING SERVICE"
+                    : result.payment.paid
+                      ? "EXECUTION COMPLETE"
+                      : "SERVICE SELECTED"}
+                </span>
+
+                <strong>{result.service}</strong>
+              </div>
+
+              <div className={styles.price}>
+                {result.price} {result.unit}
+              </div>
+            </div>
+
+            <div className={styles.reasoning}>
+              <div className={styles.reasoningHeader}>
+                <span>AGENT DECISION</span>
                 <strong>
-                  {result.payment.amount} {result.payment.asset} settled on Hedera
+                  {result.evaluatedServices} services evaluated
                 </strong>
+              </div>
 
-                {result.payment.transaction && (
-                  <div style={{ marginTop: "10px" }}>
-                    <span>Transaction</span>
-                    <strong
-                      style={{
-                        display: "block",
-                        marginTop: "4px",
-                        wordBreak: "break-all",
-                        fontFamily: "monospace",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {result.payment.transaction}
-                    </strong>
+              <p>{result.reasoning}</p>
+            </div>
 
-                    <a
-                      href={`https://hashscan.io/testnet/transaction/${encodeURIComponent(
-                        result.payment.transaction,
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                        marginTop: "8px",
-                      }}
-                    >
-                      View transaction
-                      <ArrowUpRight size={13} />
-                    </a>
+            {paymentPending && (
+              <div className={styles.paymentCard}>
+                <div className={styles.paymentHeader}>
+                  <div className={styles.paymentIcon}>
+                    <CircleDollarSign size={17} />
                   </div>
-                )}
 
-                {result.payment.payer && (
-                  <div style={{ marginTop: "10px" }}>
-                    <span>Payer</span>
-                    <strong
-                      style={{
-                        display: "block",
-                        marginTop: "4px",
-                        fontFamily: "monospace",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {result.payment.payer}
+                  <div>
+                    <span>PAYMENT REQUIRED</span>
+                    <strong>Approve this request</strong>
+                  </div>
+                </div>
+
+                <div className={styles.paymentDetails}>
+                  <div>
+                    <span>Amount</span>
+                    <strong>
+                      {result.payment.amount} {result.payment.asset}
                     </strong>
                   </div>
-                )}
+
+                  <div>
+                    <span>Network</span>
+                    <strong>Hedera Testnet</strong>
+                  </div>
+
+                  <div>
+                    <span>Method</span>
+                    <strong>{result.payment.method}</strong>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className={styles.paymentButton}
+                  onClick={handleApprovePayment}
+                  disabled={paymentLoading}
+                >
+                  {paymentLoading ? (
+                    <>
+                      <LoaderCircle
+                        size={16}
+                        className={styles.spinner}
+                      />
+                      Confirming payment...
+                    </>
+                  ) : (
+                    <>
+                      Approve payment
+                      <ArrowUpRight size={16} />
+                    </>
+                  )}
+                </button>
+
               </div>
-            </div>
-          )}
+            )}
 
-          {executing && (
-            <div className={styles.executing}>
-              <LoaderCircle
-                size={17}
-                className={styles.spinner}
-              />
+            {result.payment.paid && !executing && (
+              <div className={styles.confirmed}>
+                <div className={styles.confirmedIcon}>
+                  <ShieldCheck size={15} />
+                </div>
 
-              <div>
-                <span>EXECUTING SERVICE</span>
-                <strong>Processing request...</strong>
+                <div>
+                  <span>PAYMENT SETTLED</span>
+                  <strong>
+                    {result.payment.amount} {result.payment.asset} settled on Hedera
+                  </strong>
+
+                  {result.payment.transaction && (
+                    <div style={{ marginTop: "10px" }}>
+                      <span>Transaction</span>
+                      <strong
+                        style={{
+                          display: "block",
+                          marginTop: "4px",
+                          wordBreak: "break-all",
+                          fontFamily: "monospace",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {result.payment.transaction}
+                      </strong>
+
+                      <a
+                        href={`https://hashscan.io/testnet/transaction/${encodeURIComponent(
+                          result.payment.transaction,
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          marginTop: "8px",
+                        }}
+                      >
+                        View transaction
+                        <ArrowUpRight size={13} />
+                      </a>
+                    </div>
+                  )}
+
+                  {result.payment.payer && (
+                    <div style={{ marginTop: "10px" }}>
+                      <span>Payer</span>
+                      <strong
+                        style={{
+                          display: "block",
+                          marginTop: "4px",
+                          fontFamily: "monospace",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {result.payment.payer}
+                      </strong>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {result.success && result.result && !executing && (
-            <div className={styles.output}>
-              <div className={styles.outputHeader}>
-                <span>RESULT</span>
-                <span>Completed</span>
+            {executing && (
+              <div className={styles.executing}>
+                <LoaderCircle
+                  size={17}
+                  className={styles.spinner}
+                />
+
+                <div>
+                  <span>EXECUTING SERVICE</span>
+                  <strong>Processing request...</strong>
+                </div>
               </div>
+            )}
 
-              <pre>{result.result}</pre>
-            </div>
-          )}
-        </div>
+            {result.success && result.result && !executing && (
+              <div className={styles.output}>
+                <div className={styles.outputHeader}>
+                  <span>RESULT</span>
+                  <span>Completed</span>
+                </div>
+
+                <pre>{result.result}</pre>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </section>
   );

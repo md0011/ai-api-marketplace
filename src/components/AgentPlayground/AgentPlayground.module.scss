@@ -184,6 +184,30 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+.discoveryBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  width: fit-content;
+  padding: 7px 11px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: rgba(255, 255, 255, 0.5);
+
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  svg {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
 .result {
   display: flex;
   flex-direction: column;
@@ -248,8 +272,17 @@
 .reasoning {
   padding: 16px;
 
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
+
   background: rgba(255, 255, 255, 0.025);
+}
+
+.reasoningHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 
   span {
     color: rgba(255, 255, 255, 0.3);
@@ -258,13 +291,23 @@
     letter-spacing: 0.14em;
   }
 
-  p {
-    margin: 8px 0 0;
+  strong {
+    flex-shrink: 0;
 
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 12px;
-    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
+}
+
+.reasoning p {
+  margin: 10px 0 0;
+
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .paymentCard {
@@ -371,7 +414,7 @@
 .confirmed,
 .executing {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 
   padding: 14px;
@@ -385,6 +428,8 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+    flex: 1;
   }
 
   span {
@@ -495,7 +540,18 @@
     display: none;
   }
 
+  .reasoningHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .paymentDetails {
     flex-direction: column;
+  }
+
+  .discoveryBadge {
+    width: 100%;
+    justify-content: center;
   }
 }

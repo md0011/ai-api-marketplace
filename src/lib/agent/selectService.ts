@@ -4,6 +4,7 @@ import { APIService } from "@/types/service";
 interface ServiceSelection {
   service: APIService;
   reasoning: string;
+  evaluatedServices: number;
 }
 
 interface ScoredService {
@@ -176,12 +177,13 @@ export function selectService(
   const reasoning =
     bestMatch.matches.length > 0
       ? `Selected ${bestMatch.service.name} because it matches the goal through ${bestMatch.matches
-          .slice(0, 5)
-          .join(", ")}.`
+        .slice(0, 5)
+        .join(", ")}.`
       : `Selected ${bestMatch.service.name} because it is the strongest available service match.`;
 
   return {
     service: bestMatch.service,
     reasoning,
+    evaluatedServices: scoredServices.length,
   };
 }

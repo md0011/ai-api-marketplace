@@ -23,7 +23,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const { service, reasoning } = selection;
+    const {
+      service,
+      reasoning,
+      evaluatedServices,
+    } = selection;
 
     const execution = await executeService({
       service,
@@ -45,6 +49,7 @@ export async function POST(request: Request) {
       price: service.price,
       unit: service.unit,
       reasoning,
+      evaluatedServices,
       payment: execution.payment,
       result: execution.output,
     });
