@@ -6,72 +6,182 @@ interface ServiceSelection {
   reasoning: string;
 }
 
-export function selectService(goal: string): ServiceSelection | null {
-  const normalizedGoal = goal.toLowerCase();
+interface ScoredService {
+  service: APIService;
+  score: number;
+  matches: string[];
+}
 
-  let serviceId = "summarize";
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "for",
+  "from",
+  "get",
+  "give",
+  "i",
+  "in",
+  "into",
+  "me",
+  "my",
+  "of",
+  "on",
+  "the",
+  "this",
+  "to",
+  "want",
+  "with",
+]);
 
-  let reasoning =
-    "The agent selected SummarizeAI for general AI text processing.";
+const RELATED_WORDS: Record<string, string[]> = {
+  translate: ["translation", "language"],
+  translation: ["translate", "language"],
+  translating: ["translate", "translation"],
 
-  if (
-    normalizedGoal.includes("image") ||
-    normalizedGoal.includes("photo") ||
-    normalizedGoal.includes("picture") ||
-    normalizedGoal.includes("visual")
-  ) {
-    serviceId = "pixelforge";
+  image: ["images", "imagery", "visual"],
+  images: ["image", "imagery", "visual"],
+  imagery: ["image", "images", "visual"],
+  visual: ["image", "images", "imagery"],
 
-    reasoning =
-      "The agent identified an image-generation requirement and selected PixelForge.";
-  } else if (
-    normalizedGoal.includes("search") ||
-    normalizedGoal.includes("research") ||
-    normalizedGoal.includes("find information") ||
-    normalizedGoal.includes("web")
-  ) {
-    serviceId = "deepsearch";
+  research: ["researching", "information", "search"],
+  researching: ["research", "information", "search"],
+  search: ["research", "information"],
+  find: ["search", "research", "information"],
 
-    reasoning =
-      "The agent identified a research requirement and selected DeepSearch.";
-  } else if (
-    normalizedGoal.includes("translate") ||
-    normalizedGoal.includes("translation")
-  ) {
-    serviceId = "lingua";
+  analyze: ["analysis", "analytics", "activity"],
+  analysis: ["analyze", "analytics"],
+  analytics: ["analyze", "analysis"],
 
-    reasoning =
-      "The agent identified a translation requirement and selected Lingua.";
-  } else if (
-    normalizedGoal.includes("code") ||
-    normalizedGoal.includes("debug") ||
-    normalizedGoal.includes("program")
-  ) {
-    serviceId = "codepilot";
+  summarize: ["summary", "summarization"],
+  summary: ["summarize", "summarization"],
+  summarise: ["summarize", "summary"],
 
-    reasoning =
-      "The agent identified a developer task and selected CodePilot.";
-  } else if (
-    normalizedGoal.includes("blockchain") ||
-    normalizedGoal.includes("wallet") ||
-    normalizedGoal.includes("onchain")
-  ) {
-    serviceId = "chainlens";
+  code: ["coding", "programming", "developer"],
+  coding: ["code", "programming"],
+  program: ["programming", "code"],
+  programming: ["code", "coding"],
 
-    reasoning =
-      "The agent identified a blockchain-data requirement and selected ChainLens.";
+  blockchain: ["onchain", "wallet", "protocol"],
+  wallet: ["blockchain", "onchain"],
+  onchain: ["blockchain", "wallet"],
+};
+
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter(
+      (word) =>
+        word.length > 2 && !STOP_WORDS.has(word),
+    );
+}
+
+function expandWords(words: string[]): Set<string> {
+  const expanded = new Set(words);
+
+  for (const word of words) {
+    const relatedWords = RELATED_WORDS[word];
+
+    if (relatedWords) {
+      for (const relatedWord of relatedWords) {
+        expanded.add(relatedWord);
+      }
+    }
   }
 
-  const service = services.find(
-    (item) => item.id === serviceId,
-  );
+  return expanded;
+}
 
-  if (!service) {
-    return null;
+function scoreService(
+  goal: string,
+  service: APIService,
+): ScoredService {
+  const goalWords = tokenize(goal);
+  const expandedGoalWords = expandWords(goalWords);
+
+  const nameWords = tokenize(service.name);
+  const descriptionWords = tokenize(service.description);
+  const categoryWords = tokenize(service.category);
+  const capabilityWords = service.capabilities.flatMap(tokenize);
+
+  const matches: string[] = [];
+  let score = 0;
+
+  for (const word of goalWords) {
+    if (nameWords.includes(word)) {
+      score += 5;
+      matches.push(word);
+    }
+
+    if (descriptionWords.includes(word)) {
+      score += 3;
+      matches.push(word);
+    }
+
+    if (categoryWords.includes(word)) {
+      score += 2;
+      matches.push(word);
+    }
+
+    if (capabilityWords.includes(word)) {
+      score += 5;
+      matches.push(word);
+    }
+  }
+
+  // Check related words against service capabilities.
+  for (const word of expandedGoalWords) {
+    if (capabilityWords.includes(word)) {
+      score += 4;
+      matches.push(word);
+    }
+
+    if (descriptionWords.includes(word)) {
+      score += 2;
+      matches.push(word);
+    }
+  }
+
+  // Prefer services that are currently online.
+  if (service.status === "online") {
+    score += 1;
   }
 
   return {
     service,
+    score,
+    matches: [...new Set(matches)],
+  };
+}
+
+export function selectService(
+  goal: string,
+): ServiceSelection | null {
+  if (!goal.trim()) {
+    return null;
+  }
+
+  const scoredServices = services
+    .map((service) => scoreService(goal, service))
+    .sort((a, b) => b.score - a.score);
+
+  const bestMatch = scoredServices[0];
+
+  if (!bestMatch || bestMatch.score === 0) {
+    return null;
+  }
+
+  const reasoning =
+    bestMatch.matches.length > 0
+      ? `Selected ${bestMatch.service.name} because it matches the goal through ${bestMatch.matches
+          .slice(0, 5)
+          .join(", ")}.`
+      : `Selected ${bestMatch.service.name} because it is the strongest available service match.`;
+
+  return {
+    service: bestMatch.service,
     reasoning,
   };
 }
