@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { decodePaymentResponseHeader } from "@x402/fetch";
 import { paidFetch } from "@/lib/payments/hederaX402Client";
 
 export async function POST(request: NextRequest) {
@@ -35,8 +36,11 @@ export async function POST(request: NextRequest) {
         success: response.ok,
         status: response.status,
         result,
-        paymentResponse:
-          response.headers.get("PAYMENT-RESPONSE"),
+        paymentSettlement: response.headers.get("PAYMENT-RESPONSE")
+          ? decodePaymentResponseHeader(
+            response.headers.get("PAYMENT-RESPONSE")!,
+          )
+          : null,
       },
       {
         status: response.ok ? 200 : response.status,
