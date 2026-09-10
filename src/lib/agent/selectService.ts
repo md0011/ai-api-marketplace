@@ -110,6 +110,14 @@ function scoreService(
   const matches: string[] = [];
   let score = 0;
 
+  const wantsAgentDiscovery =
+    /\b(find|discover|search|look for)\b/i.test(goal) &&
+    /\b(agent|agents)\b/i.test(goal);
+
+  if (wantsAgentDiscovery && service.id === "agentscout") {
+    score += 20;
+  }
+
   for (const word of goalWords) {
     if (nameWords.includes(word)) {
       score += 5;

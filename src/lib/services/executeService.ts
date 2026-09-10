@@ -1,3 +1,4 @@
+import { rankAgents } from "@/lib/agent/rankAgents";
 import { discoverAgents } from "@/lib/graph/agentScout";
 import { APIService } from "@/types/service";
 import {
@@ -40,10 +41,15 @@ export async function executeService({
     try {
       const agents = await discoverAgents();
 
+      const rankedAgents = rankAgents(
+        input,
+        agents,
+      );
+
       const output = [
-        `AgentScout discovered ${agents.length} active MCP agents using The Graph.`,
+        `AgentScout discovered ${rankedAgents.length} active MCP + x402 agents using The Graph.`,
         "",
-        ...agents.slice(0, 5).map((agent, index) => {
+        ...rankedAgents.slice(0, 5).map((agent, index) => {
           return [
             `${index + 1}. ${agent.name ?? `Agent ${agent.agentId}`}`,
             `Agent ID: ${agent.agentId}`,
@@ -62,7 +68,7 @@ export async function executeService({
       return {
         success: true,
         output,
-        agents: agents.slice(0, 10),
+        agents: rankedAgents.slice(0, 10),
         payment: {
           required: false,
           paid: false,
