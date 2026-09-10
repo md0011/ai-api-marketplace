@@ -139,4 +139,29 @@ export const services: APIService[] = [
       amount: "0.0015",
     },
   },
+    {
+    id: "agentscout",
+    name: "AgentScout",
+    provider: "AgentMarket + The Graph",
+    description:
+      "Discover and evaluate ERC-8004 AI agents using live onchain identity, capabilities, and reputation data.",
+    category: "Research",
+    price: "0.001",
+    unit: "HBAR / request",
+    responseTime: "< 3 sec",
+    status: "online",
+    capabilities: [
+      "Agent discovery",
+      "ERC-8004 agent search",
+      "MCP agent discovery",
+      "Agent reputation",
+      "x402 support discovery",
+    ],
+    payment: {
+      method: "x402",
+      network: "hedera-testnet",
+      asset: "HBAR",
+      amount: "0.001",
+    },
+  },
 ];

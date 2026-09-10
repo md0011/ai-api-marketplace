@@ -24,6 +24,15 @@ interface PaymentState {
   payer?: string;
 }
 
+interface ScoutAgent {
+  agentId: string;
+  name: string | null;
+  description: string | null;
+  mcpEndpoint: string | null;
+  mcpVersion: string | null;
+  x402Support: boolean;
+}
+
 interface AgentResult {
   success: boolean;
   serviceId: string;
@@ -35,6 +44,7 @@ interface AgentResult {
   evaluatedServices: number;
   result: string;
   payment: PaymentState;
+  agents?: ScoutAgent[];
 }
 
 export default function AgentPlayground() {
@@ -403,16 +413,82 @@ export default function AgentPlayground() {
               </div>
             )}
 
-            {result.success && result.result && !executing && (
-              <div className={styles.output}>
-                <div className={styles.outputHeader}>
-                  <span>RESULT</span>
-                  <span>Completed</span>
-                </div>
+            {result.success &&
+              result.serviceId === "agentscout" &&
+              result.agents &&
+              result.agents.length > 0 &&
+              !executing && (
+                <div className={styles.agentDiscovery}>
+                  <div className={styles.outputHeader}>
+                    <span>THE GRAPH · AGENT0</span>
+                    <span>
+                      {result.agents.length} matches
+                    </span>
+                  </div>
 
-                <pre>{result.result}</pre>
-              </div>
-            )}
+                  <div className={styles.agentList}>
+                    {result.agents.map((agent) => (
+                      <div
+                        key={agent.agentId}
+                        className={styles.agentCard}
+                      >
+                        <div className={styles.agentCardTop}>
+                          <div>
+                            <strong className={styles.agentName}>
+                              {agent.name ?? `Agent ${agent.agentId}`}
+                            </strong>
+
+                            <span className={styles.agentId}>
+                              ERC-8004 · {agent.agentId}
+                            </span>
+                          </div>
+
+                          <div className={styles.agentBadges}>
+                            <span className={styles.badge}>
+                              MCP ✓
+                            </span>
+
+                            {agent.x402Support && (
+                              <span className={styles.badge}>
+                                x402 ✓
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {agent.description && (
+                          <p>{agent.description}</p>
+                        )}
+
+                        <div className={styles.agentMeta}>
+                          <span>
+                            MCP {agent.mcpVersion ?? "supported"}
+                          </span>
+
+                          {agent.mcpEndpoint && (
+                            <span>
+                              Endpoint available
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            {result.success &&
+              result.serviceId !== "agentscout" &&
+              result.result &&
+              !executing && (
+                <div className={styles.output}>
+                  <div className={styles.outputHeader}>
+                    <span>RESULT</span>
+                    <span>Completed</span>
+                  </div>
+
+                  <pre>{result.result}</pre>
+                </div>
+              )}
           </div>
         </>
       )}

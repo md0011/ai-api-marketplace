@@ -49,9 +49,10 @@ export async function POST(request: Request) {
       price: service.price,
       unit: service.unit,
       reasoning,
-      evaluatedServices,
+      evaluatedServices: selection.evaluatedServices,
       payment: execution.payment,
       result: execution.output,
+      agents: execution.agents,
     });
   } catch {
     return NextResponse.json(
