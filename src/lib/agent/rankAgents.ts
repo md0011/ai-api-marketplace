@@ -5,6 +5,10 @@ interface RankedAgent {
     mcpEndpoint: string | null;
     mcpVersion: string | null;
     x402Support: boolean;
+    totalFeedback?: number;
+    validationCount?: number;
+    completedValidationCount?: number;
+    averageValidationScore?: number;
 }
 
 const STOP_WORDS = new Set([
@@ -81,6 +85,130 @@ function expandWords(words: string[]): Set<string> {
     return expanded;
 }
 
+function getFeedbackBonus(
+    totalFeedback: number,
+): number {
+    if (totalFeedback >= 20) {
+        return 8;
+    }
+
+    if (totalFeedback >= 10) {
+        return 6;
+    }
+
+    if (totalFeedback >= 5) {
+        return 4;
+    }
+
+    if (totalFeedback >= 2) {
+        return 2;
+    }
+
+    if (totalFeedback >= 1) {
+        return 1;
+    }
+
+    return 0;
+}
+
+function getValidationBonus(
+    agent: RankedAgent,
+): number {
+    if (
+        !agent.completedValidationCount ||
+        agent.completedValidationCount <= 0
+    ) {
+        return 0;
+    }
+
+    const score =
+        agent.averageValidationScore ?? 0;
+
+    if (score >= 90) {
+        return 8;
+    }
+
+    if (score >= 75) {
+        return 6;
+    }
+
+    if (score >= 50) {
+        return 4;
+    }
+
+    return 2;
+}
+
+function getIntentBonus(goal: string, agent: RankedAgent): number {
+    const normalizedGoal = goal.toLowerCase();
+    const text = [
+        agent.name ?? "",
+        agent.description ?? "",
+    ]
+        .join(" ")
+        .toLowerCase();
+
+    let bonus = 0;
+
+    // ZK / proof-generation intent.
+    if (
+        /\b(zk|zero[- ]knowledge|proof|proofs)\b/.test(
+            normalizedGoal,
+        )
+    ) {
+        if (
+            /\b(zk|zero[- ]knowledge|proof|proofs)\b/.test(
+                text,
+            )
+        ) {
+            bonus += 20;
+        }
+
+        if (
+            /\b(generate|generating|generation)\b/.test(
+                text,
+            )
+        ) {
+            bonus += 10;
+        }
+    }
+
+    // Blockchain market-analysis intent.
+    if (
+        /\b(blockchain|onchain|crypto)\b/.test(
+            normalizedGoal,
+        ) &&
+        /\b(market|markets|trading|price|prices)\b/.test(
+            normalizedGoal,
+        ) &&
+        /\b(analysis|analyze|analytics)\b/.test(
+            normalizedGoal,
+        )
+    ) {
+        if (
+            /\b(blockchain|onchain|crypto)\b/.test(text)
+        ) {
+            bonus += 8;
+        }
+
+        if (
+            /\b(market|markets|trading|price|prices)\b/.test(
+                text,
+            )
+        ) {
+            bonus += 8;
+        }
+
+        if (
+            /\b(analysis|analyze|analytics)\b/.test(text)
+        ) {
+            bonus += 8;
+        }
+    }
+
+    return bonus;
+}
+
 function scoreAgent(
     goal: string,
     agent: RankedAgent,
@@ -88,13 +216,17 @@ function scoreAgent(
     const goalWords = tokenize(goal);
     const expandedGoalWords = expandWords(goalWords);
 
-    const nameWords = tokenize(agent.name ?? "");
+    const nameWords = tokenize(
+        agent.name ?? "",
+    );
+
     const descriptionWords = tokenize(
         agent.description ?? "",
     );
 
     let score = 0;
 
+    // Direct goal relevance.
     for (const word of goalWords) {
         if (nameWords.includes(word)) {
             score += 8;
@@ -105,16 +237,35 @@ function scoreAgent(
         }
     }
 
+    // Strong bonus for matching multiple distinct goal concepts.
+    // This keeps relevance ahead of reputation.
+    const matchedGoalWords = goalWords.filter(
+        (word) =>
+            nameWords.includes(word) ||
+            descriptionWords.includes(word),
+    );
+
+    const uniqueMatchedWords = new Set(
+        matchedGoalWords,
+    );
+
+    score += uniqueMatchedWords.size * 5;
+
+    // Related terminology.
     for (const word of expandedGoalWords) {
         if (nameWords.includes(word)) {
-            score += 6;
+            score += 2;
         }
 
         if (descriptionWords.includes(word)) {
-            score += 3;
+            score += 1;
         }
     }
 
+    // Intent-specific capability matching.
+    score += getIntentBonus(goal, agent);
+
+    // Technical capability bonuses.
     if (agent.mcpEndpoint) {
         score += 2;
     }
@@ -126,6 +277,18 @@ function scoreAgent(
     if (agent.x402Support) {
         score += 2;
     }
+
+    // Reputation is a secondary trust signal.
+    score += Math.min(
+        getFeedbackBonus(agent.totalFeedback ?? 0),
+        4,
+    );
+
+    // Validation is also secondary.
+    score += Math.min(
+        getValidationBonus(agent),
+        4,
+    );
 
     return score;
 }
