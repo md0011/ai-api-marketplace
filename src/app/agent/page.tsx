@@ -13,26 +13,39 @@ export default function AgentPage() {
         </Link>
 
         <header className={styles.header}>
-          <div className={styles.icon}>
-            <Bot size={20} />
+          <div className={styles.headerMain}>
+            <div className={styles.icon}>
+              <Bot size={20} />
+            </div>
+
+            <div className={styles.headerCopy}>
+              <span className={styles.eyebrow}>
+                AGENT PLAYGROUND
+              </span>
+
+              <h1>Give your agent a goal.</h1>
+
+              <p>
+                Describe what you want done. AgentMarket discovers
+                capabilities, chooses the right provider, and executes
+                the request.
+              </p>
+            </div>
           </div>
 
-          <div>
-            <span className={styles.eyebrow}>AGENT PLAYGROUND</span>
-            <h1>Give your agent a goal.</h1>
-            <p>
-              Describe what you want done. AgentMarket will find the right
-              service and execute the request.
-            </p>
+          <div className={styles.status}>
+            <span className={styles.statusDot} />
+            Hedera Testnet
           </div>
         </header>
 
         <AgentPlayground />
 
         <div className={styles.note}>
-          <Sparkles size={14} />
+          <Sparkles size={13} />
           <span>
-            Agent autonomously selects services and settles payments through Hedera x402.
+            Agent autonomously discovers capabilities, selects services,
+            and settles paid requests through Hedera x402 when required.
           </span>
         </div>
       </div>

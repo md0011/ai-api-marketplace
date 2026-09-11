@@ -124,11 +124,8 @@ export default async function ServicePage({
               </div>
             </div>
 
-            <Link
-              href={`/services/${service.id}/try`}
-              className={styles.tryButton}
-            >
-              Try this service
+            <Link href="/agent" className={styles.primaryAction}>
+              Use with Agent
               <ArrowUpRight size={15} />
             </Link>
 

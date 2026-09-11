@@ -96,69 +96,7 @@ export default function AgentPlayground() {
     }
   }
 
-  async function handleApprovePayment() {
-    if (!result) return;
-
-    setPaymentLoading(true);
-    setError("");
-
-    try {
-      const response = await fetch("/api/payments/demo", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          serviceId: result.serviceId,
-          input: goal.trim(),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Payment approval failed.");
-      }
-
-      setResult((current) =>
-        current
-          ? {
-            ...current,
-            payment: data.payment,
-            result: "",
-            success: false,
-          }
-          : current,
-      );
-
-      setPaymentLoading(false);
-      setExecuting(true);
-
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-
-      setResult((current) =>
-        current
-          ? {
-            ...current,
-            success: data.success,
-            payment: data.payment,
-            result: data.result,
-          }
-          : current,
-      );
-
-      setExecuting(false);
-    } catch (error) {
-      setPaymentLoading(false);
-      setExecuting(false);
-
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong.",
-      );
-    }
-  }
+  const isGraphService = result?.serviceId === "agentscout";
 
   const paymentPending =
     result?.payment?.required && !result.payment.paid;
@@ -253,16 +191,20 @@ export default function AgentPlayground() {
                 <span>
                   {executing
                     ? "EXECUTING SERVICE"
-                    : result.payment.paid
-                      ? "EXECUTION COMPLETE"
-                      : "SERVICE SELECTED"}
+                    : isGraphService && result.success
+                      ? "GRAPH QUERY COMPLETE"
+                      : result.payment.paid
+                        ? "EXECUTION COMPLETE"
+                        : "SERVICE SELECTED"}
                 </span>
 
                 <strong>{result.service}</strong>
               </div>
 
               <div className={styles.price}>
-                {result.price} {result.unit}
+                {isGraphService
+                  ? "THE GRAPH · LIVE"
+                  : `${result.price} ${result.unit}`}
               </div>
             </div>
 
@@ -276,6 +218,21 @@ export default function AgentPlayground() {
 
               <p>{result.reasoning}</p>
             </div>
+
+            {isGraphService && result.success && !executing && (
+              <div className={styles.reasoning}>
+                <div className={styles.reasoningHeader}>
+                  <span>DATA SOURCE</span>
+                  <strong>Live Graph data</strong>
+                </div>
+
+                <p>
+                  AgentScout queried The Graph Agent0 data to discover
+                  and rank ERC-8004 agents by capabilities and trust
+                  signals. No HBAR payment was required for this query.
+                </p>
+              </div>
+            )}
 
             {paymentPending && (
               <div className={styles.paymentCard}>
@@ -312,7 +269,6 @@ export default function AgentPlayground() {
                 <button
                   type="button"
                   className={styles.paymentButton}
-                  onClick={handleApprovePayment}
                   disabled={paymentLoading}
                 >
                   {paymentLoading ? (
@@ -330,7 +286,6 @@ export default function AgentPlayground() {
                     </>
                   )}
                 </button>
-
               </div>
             )}
 
@@ -372,6 +327,8 @@ export default function AgentPlayground() {
                           alignItems: "center",
                           gap: "5px",
                           marginTop: "8px",
+                          color: "#fff",
+                          textDecoration: "none",
                         }}
                       >
                         View transaction
@@ -476,6 +433,7 @@ export default function AgentPlayground() {
                   </div>
                 </div>
               )}
+
             {result.success &&
               result.serviceId !== "agentscout" &&
               result.result &&
@@ -492,6 +450,8 @@ export default function AgentPlayground() {
           </div>
         </>
       )}
+
+   
     </section>
   );
 }
