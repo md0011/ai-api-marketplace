@@ -12,6 +12,7 @@ interface ExecuteServiceInput {
   service: APIService;
   input: string;
   payment?: PaymentResult;
+  baseUrl?: string;
 }
 
 export interface ScoutAgent {
@@ -34,6 +35,7 @@ export async function executeService({
   service,
   input,
   payment,
+  baseUrl,
 }: ExecuteServiceInput): Promise<ExecuteServiceResult> {
   // AgentScout uses The Graph Agent0 Subgraph
   // to discover live ERC-8004 agents.
@@ -98,10 +100,15 @@ export async function executeService({
       };
     }
   }
+  const appUrl =
+    baseUrl ??
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
   // PixelForge uses the real Hedera x402 payment flow.
   if (service.id === "pixelforge") {
     const response = await paidFetch(
-      "http://localhost:3000/api/services/pixelforge",
+      `${appUrl}/api/services/pixelforge`,
       {
         method: "POST",
         headers: {

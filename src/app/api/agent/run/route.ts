@@ -32,6 +32,7 @@ export async function POST(request: Request) {
     const execution = await executeService({
       service,
       input: goal,
+      baseUrl: new URL(request.url).origin,
     });
 
     const result = [
