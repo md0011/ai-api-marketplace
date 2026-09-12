@@ -26,9 +26,6 @@ export default function Hero() {
           <ArrowRight size={16} />
         </a>
 
-        <a href="#how-it-works" className={styles.secondary}>
-          How it works
-        </a>
       </div>
 
       <div className={styles.signal}>

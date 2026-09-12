@@ -5,8 +5,6 @@ import ServiceGrid from "@/components/ServiceGrid/ServiceGrid";
 export default function Home() {
   return (
     <>
-      <Header />
-
       <main>
         <Hero />
 

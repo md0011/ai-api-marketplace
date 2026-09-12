@@ -1,0 +1,255 @@
+.page {
+  min-height: 100vh;
+  background: #08090a;
+  color: #f5f5f5;
+}
+
+.hero {
+  padding: 150px 24px 120px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.heroInner {
+  width: min(900px, 100%);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #8d939c;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+
+.hero h1 span {
+  color: #70757d;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 30px 0 0;
+  color: #969ba3;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.primaryAction {
+  width: fit-content;
+  min-height: 44px;
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  background: #f5f5f5;
+  color: #08090a;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.flowSection,
+.techSection {
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 110px 0;
+}
+
+.sectionHeader {
+  margin-bottom: 48px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.step {
+  flex: 1 1 250px;
+  min-width: 0;
+  padding: 30px 28px 30px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.step + .step {
+  padding-left: 28px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stepTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 55px;
+}
+
+.stepNumber {
+  color: #666b72;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.stepIcon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #c7cbd0;
+}
+
+.step h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.step p {
+  max-width: 240px;
+  margin: 0;
+  color: #858a92;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.techSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.techGrid {
+  display: flex;
+  gap: 16px;
+}
+
+.techCard {
+  flex: 1;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.techLabel {
+  margin-bottom: 55px;
+  color: #777c84;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.techCard h3 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.techCard p {
+  max-width: 480px;
+  margin: 0;
+  color: #888d95;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.techMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.techMeta span {
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #9da2a9;
+  font-size: 10px;
+}
+
+.ctaSection {
+  padding: 120px 24px 150px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ctaSection h2 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 60px);
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+
+.ctaSection p {
+  max-width: 500px;
+  margin: 20px auto 0;
+  color: #888d95;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.ctaSection .primaryAction {
+  margin-top: 28px;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    padding: 120px 20px 90px;
+  }
+
+  .flowSection,
+  .techSection {
+    width: calc(100% - 40px);
+    padding: 80px 0;
+  }
+
+  .step,
+  .step + .step {
+    padding: 26px 0;
+    border-left: 0;
+  }
+
+  .stepTop {
+    margin-bottom: 35px;
+  }
+
+  .techGrid {
+    flex-direction: column;
+  }
+
+  .techCard {
+    padding: 26px;
+  }
+
+  .ctaSection {
+    padding: 90px 20px 110px;
+  }
+}

@@ -11,25 +11,22 @@ export default function Header() {
             <Circle size={8} fill="currentColor" />
           </span>
 
-          <span>agent<span>market</span></span>
+          <span>
+            agent<span>market</span>
+          </span>
         </Link>
 
         <nav className={styles.nav}>
-          <Link href="/marketplace">Marketplace</Link>
-          <Link href="#how-it-works">How it works</Link>
-          <Link href="#developers">Developers</Link>
+          <Link href="/how-it-works">How it works</Link>
+          <Link href="/developers">Developers</Link>
         </nav>
 
         <div className={styles.actions}>
           <Link href="/agent" className={styles.connectButton}>
-            Connect agent
+            Launch Agent
             <ArrowUpRight size={14} />
           </Link>
-
-          <Link href="/marketplace" className={styles.launchButton}>
-            Explore
-            <ArrowUpRight size={15} />
-          </Link>
+          
         </div>
       </div>
     </header>
